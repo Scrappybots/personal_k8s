@@ -89,11 +89,11 @@
         - name: default
           default: true
           spare-gb: 0
+          volume-group: microshift-vg
           thin-pool:
             name: microshift-lv
             overprovision-ratio: 10
-            type: thin
-            volume-group: microshift-vg
+          type: thin
     when: lvmd_check.rc != 0
 
   - name: Check for kubeconfig in ~/.kube/config
