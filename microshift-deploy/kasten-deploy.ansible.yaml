@@ -3,14 +3,6 @@
   remote_user: ansible
   become: yes
 
-  vars_prompt:
-    - name: KastenUsername
-      prompt: "Enter in Kasten Username"
-
-    - name: KastenPassword
-      prompt: "Enter in Kasten Password"
-      private: yes
-
   vars:
     htpasswd_ansible: ansible:$apr1$0rgo574y$mkGd.kQOFlAAIHhI40Q8E0
 
