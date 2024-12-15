@@ -39,14 +39,21 @@
     shell: lvcreate -L 80G -T microshift-vg/microshift-lv
     when: pv_check.rc != 0
 
+  - name: Check to see if openshift-pull-secret exists.
+    shell: test -f /etc/crio/openshift-pull-secret
+    register: openshift_pull_secret_check
+
   - name: Create folder at /etc/crio/.
     shell: mkdir -p /etc/crio
+    when: openshift_pull_secret_check.rc != 0
 
   - name: Put Openshift API key in to /etc/crio/openshift-pull-secret
     shell: 'echo "{{ OpenshiftAPIKey }}" > /etc/crio/openshift-pull-secret'
+    when: openshift_pull_secret_check.rc != 0
 
   - name: Set permissions on /etc/crio/openshift-pull-secret
     shell: chmod 600 /etc/crio/openshift-pull-secret
+    when: openshift_pull_secret_check.rc != 0
 
   # The default minimal install of RHEL 9 does not have firewalld enabled, uncomment this if you are using firewalld.
   # - name: Configure Firewalld for Microshift.
