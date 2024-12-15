@@ -2,11 +2,9 @@ A collection of playbooks that I use to deploy my Microshift node as well as ins
 
 Start with the microshift-deploy.ansible.yaml playbook. After it is completed it will automatically go to the next playbook in the sequence.
 
-Current Sequence:
-
+Current Sequence: 
 microshift-deploy
-
-kasten-deploy
+kasten-deploy 
 
 Applications:
 
