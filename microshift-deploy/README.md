@@ -9,6 +9,8 @@ microshift-deploy
 kasten-deploy
 
 Applications:
+
 Kasten - Application aware backup for Kubernetes. kasten.io
+
 boxes.py - https://github.com/florianfesti/boxes
   - Build the Dockerfile first, then deploy.
