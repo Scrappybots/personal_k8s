@@ -21,14 +21,9 @@
     shell: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
     ignore_errors: yes
 
-  - name: Check if /usr/local/bin is in $PATH.
-    shell: echo $PATH | grep -q /usr/local/bin
-    register: path_check
+  - name: Create symbolic link from /usr/bin/helm to /usr/local/bin/helm
+    shell: ln -s /usr/local/bin/helm /usr/bin/helm 
     ignore_errors: yes
-
-  - name: Add /usr/local/bin to PATH
-    shell: export PATH=$PATH:/usr/local/bin
-    when: path_check.rc != 0
 
   - name: Add Kasten Helm Repo
     shell: helm repo add kasten https://charts.kasten.io/
