@@ -3,7 +3,7 @@
 ### I have a basic ansible user configured with passwordless access as a service account on my K9S server that I will use to run this playbook.
 ### My host configuration matches their recommendation. I have RHEL9 installed on a 40GB partition located at /dev/sda and a second 100GB partition located at /dev/sdb.
 ### You can run this on baremetal, or on any hypervisor platform. I use Proxmox at home, just double check the drive mappings before running the playbook and you are good to go.
-
+### The OS I am using is a minimal install of RHEL9 from the Red Hat Developer Portal.
 - name: Deploy Microshift and configure other applications and services on RHEL 9.
   hosts: personal-k8s
   remote_user: ansible
