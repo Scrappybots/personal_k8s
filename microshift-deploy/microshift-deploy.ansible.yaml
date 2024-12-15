@@ -85,15 +85,16 @@
     lineinfile:
       path: /etc/microshift/lvmd.yaml
       line: |-
+        socket-name:
         device-classes:
         - name: default
           default: true
           spare-gb: 0
-          volume-group: microshift-vg
           thin-pool:
             name: microshift-lv
             overprovision-ratio: 10
           type: thin
+          volume-group: microshift-vg
     when: lvmd_check.rc != 0
 
   - name: Check for kubeconfig in ~/.kube/config
