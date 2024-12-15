@@ -20,6 +20,9 @@
   - name: Install helm.
     shell: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
+  - name: Add /usr/local/bin to PATH
+    shell: export PATH=$PATH:/usr/local/bin
+
   - name: Add Kasten Helm Repo
     shell: helm repo add kasten https://charts.kasten.io/
 
