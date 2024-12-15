@@ -112,10 +112,6 @@
     shell: "echo /var/lib/microshift/resources/kubeadmin/kubeconfig"
     register: kubeconfig
 
-  - name: Print kubeconfig
-    debug:
-      var: kubeconfig.stdout
-
   - name: Set permissions on ~/.kube/config
     shell: chmod go-r ~/.kube/config
 
