@@ -39,7 +39,7 @@
     shell: lvcreate -L 80G -T microshift-vg/microshift-lv
     when: pv_check.rc != 0
 
-  - name: Create folder at /etc/crio/
+  - name: Create folder at /etc/crio/.
     shell: mkdir -p /etc/crio
 
   - name: Put Openshift API key in to /etc/crio/openshift-pull-secret
