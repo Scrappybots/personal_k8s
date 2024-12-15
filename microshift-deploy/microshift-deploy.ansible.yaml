@@ -99,6 +99,7 @@
   - name: Check for kubeconfig in ~/.kube/config
     shell: test -f ~/.kube/config
     register: kubeconfig_check
+    ignore_errors: yes
 
   - name: Create ~/.kube/config
     shell: mkdir -p ~/.kube && touch ~/.kube/config
