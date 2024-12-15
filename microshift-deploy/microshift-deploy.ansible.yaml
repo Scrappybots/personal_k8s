@@ -13,6 +13,11 @@
     - name: OpenshiftAPIKey
       prompt: "Enter your OpenShift API Key"
       private: yes  
+    
+    - name: MicroshiftVersion
+      prompt: "Enter the version of Microshift you would like to install"
+      default: "4.17"
+      required: yes 
 
   tasks: 
 
@@ -22,6 +27,9 @@
       name: '*'
       state: latest
       update_cache: yes
+
+  - name: Enable Microshift Repos. sudo subscription-manager repos --enable rhocp-4.17-for-rhel-9-$(uname -m)-rpms --enable fast-datapath-for-rhel-9-$(uname -m)-rpms
+    shell: subscription-manager repos --enable rhocp-{{ MicroshiftVersion }}-for-rhel-9-$(uname -m)-rpms --enable fast-datapath-for-rhel-9-$(uname -m)-rpms
 
   - name: Check to see if PV is already created.
     shell: pvdisplay | grep /dev/sdb
