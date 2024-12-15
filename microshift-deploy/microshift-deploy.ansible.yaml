@@ -23,14 +23,21 @@
       state: latest
       update_cache: yes
 
+  - name: Check to see if PV is already created.
+    shell: pvdisplay | grep /dev/sdb
+    register: pv_check
+
   - name: Create PV on new partition.
     shell: pvcreate /dev/sdb
+    when: pv_check.rc != 0
 
   - name: Create VG for Microshift
     shell: vgcreate microshift-vg /dev/sdb
+    when: pv_check.rc != 0
 
   - name: Create LV for Microshift
     shell: lvcreate -L 80G -T microshift-vg/microshift-lv
+    when: pv_check.rc != 0
 
   - name: Put Openshift API key in to /etc/crio/openshift-pull-secret
     shell: 'echo "{{ OpenshiftAPIKey }}" > /etc/crio/openshift-pull-secret'
