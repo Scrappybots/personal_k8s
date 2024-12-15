@@ -9,6 +9,11 @@
       src: ./applications/
       dest: /tmp/deployments/
 
+  - name: Install Git
+    dnf:
+      name: git
+      state: present
+
   - name: Apply Volumesnapshotclass Deployment
     shell: kubectl apply -f /tmp/deployments/kasten/volumesnapshotclass.yaml
 
@@ -25,5 +30,4 @@
   - name: Check for Successfully tested snapshot restore functionality. - OK in output of k10_primer.
     debug:
       msg: "{{ k10_primer.stdout }}"
-  
   
