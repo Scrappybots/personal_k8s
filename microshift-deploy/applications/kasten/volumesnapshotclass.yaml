@@ -2,8 +2,8 @@ apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshotClass
 metadata:
   name: topolvm-snapclass
-annotations:
-  snapshot.storage.kubernetes.io/is-default-class: "true"
-  k10.kasten.io/is-snapshot-class: "true"  # Indented further
+  annotations:
+    snapshot.storage.kubernetes.io/is-default-class: "true"
+    k10.kasten.io/is-snapshot-class: "true"  # Indented further
 driver: topolvm.io  # Indented further
 deletionPolicy: Delete
