@@ -12,7 +12,7 @@
       private: yes
 
   vars:
-    htpasswd_ansible: 'ansible:$apr1$0rgo574y$mkGd.kQOFlAAIHhI40Q8E0'
+    htpasswd_ansible: ansible:$apr1$0rgo574y$mkGd.kQOFlAAIHhI40Q8E0
 
   tasks:
   - name: Copy over deployment yamls from ./applications/*
