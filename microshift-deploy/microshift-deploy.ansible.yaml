@@ -109,8 +109,12 @@
     shell: cp /var/lib/microshift/resources/kubeadmin/kubeconfig ~/.kube/config
     
   - name: Store kubeconfig as an ansible fact
-    set_fact:
-      kubeconfig: "{{ lookup('file', '/var/lib/microshift/resources/kubeadmin/kubeconfig') }}"
+    shell: "echo /var/lib/microshift/resources/kubeadmin/kubeconfig"
+    register: kubeconfig
+
+  - name: Print kubeconfig
+    debug:
+      var: kubeconfig.stdout
 
   - name: Set permissions on ~/.kube/config
     shell: chmod go-r ~/.kube/config
