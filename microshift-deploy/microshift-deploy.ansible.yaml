@@ -1,3 +1,9 @@
+### Threw this together based off of documentation provided by Kasten for the configuration of Microshift and Application level backups on RHEL9.
+### You will need to go to the Red Hat Hybrid Cloud Console and get an Openshift Pull Secret https://console.redhat.com/openshift/create/local
+### I have a basic ansible user configured with passwordless access as a service account on my K9S server that I will use to run this playbook.
+### My host configuration matches their recommendation. I have RHEL9 installed on a 40GB partition located at /dev/sda and a second 100GB partition located at /dev/sdb.
+### You can run this on baremetal, or on any hypervisor platform. I use Proxmox at home, just double check the drive mappings before running the playbook and you are good to go.
+
 - name: Deploy Microshift and configure other applications and services on RHEL 9.
   hosts: personal-k8s
   remote_user: ansible
@@ -9,20 +15,23 @@
       private: yes  
 
   tasks: 
+
+### First rule of installations, update and ugpgrade!
   - name: Update DNF and Ugrade.
     dnf:
       name: '*'
       state: latest
       update_cache: yes
 
+
   - name: Create new partition for Microshift
-    shell: fdisk /dev/sda
+    shell: fdisk /dev/sdb
 
   - name: Create PV on new partition.
-    shell: pvcreate /dev/sda1
+    shell: pvcreate /dev/sdb1
 
   - name: Create VG for Microshift
-    shell: vgcreate microshift-vg /dev/sda1
+    shell: vgcreate microshift-vg /dev/sdb1
 
   - name: Create LV for Microshift
     shell: lvcreate -L 80G -T microshift-vg/microshift-lv
