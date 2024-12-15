@@ -19,6 +19,7 @@
 
   - name: Install helm.
     shell: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    ignore_errors: yes
 
   - name: Check if /usr/local/bin is in $PATH.
     shell: echo $PATH | grep -q /usr/local/bin
