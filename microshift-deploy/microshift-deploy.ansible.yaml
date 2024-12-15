@@ -17,7 +17,6 @@
     - name: MicroshiftVersion
       prompt: "Enter the version of Microshift you would like to install"
       default: "4.17"
-      required: yes 
 
   tasks: 
 
