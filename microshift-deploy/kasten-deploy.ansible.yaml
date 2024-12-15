@@ -12,4 +12,18 @@
   - name: Apply Volumesnapshotclass Deployment
     shell: kubectl apply -f /tmp/deployments/kasten/volumesnapshotclass.yaml
 
+  - name: Install helm.
+    shell: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+  - name: Add Kasten Helm Repo
+    shell: helm repo add kasten https://charts.kasten.io/
+
+  - name: Run K10 primer script.
+    shell: curl -s https://docs.kasten.io/tools/k10_primer.sh | bash /dev/stdin csi -s topolvm-provisioner
+    register: k10_primer
+
+  - name: Check for Successfully tested snapshot restore functionality. - OK in output of k10_primer.
+    debug:
+      msg: "{{ k10_primer.stdout }}"
+  
   
