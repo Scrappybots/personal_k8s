@@ -23,15 +23,6 @@
       state: latest
       update_cache: yes
 
-  - name: Create a new partition on /dev/sdb
-    parted:
-      device: /dev/sdb
-      number: 1
-      state: present
-      part_type: primary
-      size: 10GB 
-      fs_type: ext4 
-
   - name: Create PV on new partition.
     shell: pvcreate /dev/sdb
 
