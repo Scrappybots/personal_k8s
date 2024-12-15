@@ -20,8 +20,13 @@
   - name: Install helm.
     shell: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
+  - name: Check if /usr/local/bin is in $PATH.
+    shell: echo $PATH | grep -q /usr/local/bin
+    register: path_check
+
   - name: Add /usr/local/bin to PATH
     shell: export PATH=$PATH:/usr/local/bin
+    when: path_check.rc != 0
 
   - name: Add Kasten Helm Repo
     shell: helm repo add kasten https://charts.kasten.io/
