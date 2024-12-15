@@ -74,6 +74,9 @@
   - name: Start and enable Microshift
     shell: systemctl enable --now microshift
 
+  - name: Create lvmd.yaml fild in /etc/microshift/
+    shell: mkdir -p /etc/microshift && touch /etc/microshift/lvmd.yaml
+
   - name: Configure the device class within LVMS to use the thin logical volume.
     lineinfile:
       path: /etc/microshift/lvmd.yaml
