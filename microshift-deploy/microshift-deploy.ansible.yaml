@@ -1,0 +1,64 @@
+- name: Deploy Microshift and configure other applications and services on RHEL 9.
+  hosts: personal-k8s
+  remote_user: ansible
+  become: yes
+
+  vars_prompt:
+    - name: OpenshiftAPIKey
+      prompt: "Enter your OpenShift API Key"
+      private: yes  
+
+  tasks: 
+  - name: Update DNF and Ugrade.
+    dnf:
+      name: '*'
+      state: latest
+      update_cache: yes
+
+  - name: Create new partition for Microshift
+    shell: fdisk /dev/sda
+
+  - name: Create PV on new partition.
+    shell: pvcreate /dev/sda1
+
+  - name: Create VG for Microshift
+    shell: vgcreate microshift-vg /dev/sda1
+
+  - name: Create LV for Microshift
+    shell: lvcreate -L 80G -T microshift-vg/microshift-lv
+
+  - name: Put Openshift API key in to /etc/crio/openshift-pull-secret
+    shell: 'echo "{{ OpenshiftAPIKey }}" > /etc/crio/openshift-pull-secret'
+
+  - name: Set permissions on /etc/crio/openshift-pull-secret
+    shell: chmod 600 /etc/crio/openshift-pull-secret
+
+  - name: Configure Firewalld for Microshift.
+    shell: firewall-cmd --permanent --zone=trusted --add-source=10.42.0.0/16 && firewall-cmd --permanent --zone=trusted --add-source=169.254.169.1 && firewall-cmd --reload
+
+  - name: Start and enable Microshift
+    shell: systemctl enable --now microshift
+
+  - name: Configure the device class within LVMS to use the thin logical volume.
+    lineinfile:
+      path: /etc/microshift/lvmd.yaml
+      line: |-
+        device-classes:
+        - name: default
+          default: true
+          spare-gb: 0
+          thin-pool:
+            name: mythinpool
+            overprovision-ratio: 10
+            type: thin
+            volume-group: microshift-vg
+
+  - name: Copy kubeconfig from /var/lib/microshift/resources/kubeadmin/kubeconfig to ~/.kube/config
+    shell: cp /var/lib/microshift/resources/kubeadmin/kubeconfig ~/.kube/config
+
+  - name: Set permissions on ~/.kube/config
+    shell: chmod go-r ~/.kube/config
+
+  - name: Restart Microshift
+    shell: systemctl restart microshift
+
