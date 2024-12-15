@@ -24,6 +24,7 @@
   - name: Check if /usr/local/bin is in $PATH.
     shell: echo $PATH | grep -q /usr/local/bin
     register: path_check
+    ignore_errors: yes
 
   - name: Add /usr/local/bin to PATH
     shell: export PATH=$PATH:/usr/local/bin
