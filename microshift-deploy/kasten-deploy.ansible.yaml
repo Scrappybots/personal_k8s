@@ -3,6 +3,17 @@
   remote_user: ansible
   become: yes
 
+  vars_prompt:
+    - name: KastenUsername
+      prompt: "Enter in Kasten Username"
+
+    - name: KastenPassword
+      prompt: "Enter in Kasten Password"
+      private: yes
+
+  vars:
+    htpasswd_ansible: 'ansible:$apr1$0rgo574y$mkGd.kQOFlAAIHhI40Q8E0'
+
   tasks:
   - name: Copy over deployment yamls from ./applications/*
     copy:
@@ -36,3 +47,5 @@
     debug:
       msg: "{{ k10_primer.stdout }}"
   
+  - name: Install Kasten
+    shell: helm install k10 kasten/k10 --create-namespace -n kasten-io --set externalGateway.create=true --set auth.basicAuth.enabled=true --set auth.basicAuth.htpasswd={{ htpasswd_ansible }}
