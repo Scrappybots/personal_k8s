@@ -12,7 +12,6 @@
   vars_prompt:
     - name: OpenshiftAPIKey
       prompt: "Enter your OpenShift API Key"
-      private: yes  
     
     - name: MicroshiftVersion
       prompt: "Enter the version of Microshift you would like to install"
@@ -74,8 +73,13 @@
   - name: Start and enable Microshift
     shell: systemctl enable --now microshift
 
+  - name: Check for lvmd.yaml in /etc/microshift/
+    shell: test -f /etc/microshift/lvmd.yaml
+    register: lvmd_check
+
   - name: Create lvmd.yaml fild in /etc/microshift/
     shell: mkdir -p /etc/microshift && touch /etc/microshift/lvmd.yaml
+    when: lvmd_check.rc != 0
 
   - name: Configure the device class within LVMS to use the thin logical volume.
     lineinfile:
@@ -90,6 +94,7 @@
             overprovision-ratio: 10
             type: thin
             volume-group: microshift-vg
+    when: lvmd_check.rc != 0
 
   - name: Copy kubeconfig from /var/lib/microshift/resources/kubeadmin/kubeconfig to ~/.kube/config
     shell: cp /var/lib/microshift/resources/kubeadmin/kubeconfig ~/.kube/config
