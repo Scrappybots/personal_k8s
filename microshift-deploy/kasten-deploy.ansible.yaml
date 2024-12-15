@@ -1,0 +1,15 @@
+- name: Deploy Kasten on Microshift
+  hosts: personal-k8s
+  remote_user: ansible
+  become: yes
+
+  tasks:
+  - name: Copy over deployment yamls from ./applications/*
+    copy:
+      src: ./applications/
+      dest: /tmp/deployments/
+
+  - name: Apply Volumesnapshotclass Deployment
+    shell: kubectl apply -f /tmp/deployments/kasten/volumesnapshotclass.yaml
+
+  

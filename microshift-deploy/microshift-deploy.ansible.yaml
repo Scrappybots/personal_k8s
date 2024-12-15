@@ -118,3 +118,7 @@
   - name: Restart Microshift
     shell: systemctl restart microshift
 
+  - name: Copy over deployment yamls from ./applications/*
+    copy:
+      src: ./applications/
+      dest: /tmp/kasten/
