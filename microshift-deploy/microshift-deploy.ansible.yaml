@@ -96,9 +96,17 @@
             volume-group: microshift-vg
     when: lvmd_check.rc != 0
 
+  - name: Check for kubeconfig in ~/.kube/config
+    shell: test -f ~/.kube/config
+    register: kubeconfig_check
+
+  - name: Create ~/.kube/config
+    shell: mkdir -p ~/.kube && touch ~/.kube/config
+    when: kubeconfig_check.rc != 0
+
   - name: Copy kubeconfig from /var/lib/microshift/resources/kubeadmin/kubeconfig to ~/.kube/config
     shell: cp /var/lib/microshift/resources/kubeadmin/kubeconfig ~/.kube/config
-
+    
   - name: Store kubeconfig as an ansible fact
     set_fact:
       kubeconfig: "{{ lookup('file', '/var/lib/microshift/resources/kubeadmin/kubeconfig') }}"
