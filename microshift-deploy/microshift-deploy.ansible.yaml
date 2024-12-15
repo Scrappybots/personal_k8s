@@ -85,6 +85,14 @@
   - name: Start and enable Microshift
     shell: systemctl enable --now microshift
 
+  ### Wait for the Microshift API to be available.
+  - name: Wait for Microshift API to be available.
+    wait_for:
+      host: localhost
+      port: 6443
+      delay: 10
+      timeout: 300
+
   ### Check to see if lvmd.yaml exists in /etc/microshift/.
   - name: Check for lvmd.yaml in /etc/microshift/
     shell: test -f /etc/microshift/lvmd.yaml
