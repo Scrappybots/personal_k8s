@@ -4,6 +4,8 @@ metadata:
   name: nginx-proxy-scc
   namespace: proxy-manager
 allowPrivilegeEscalation: true
+allowPrivilegedContainer: true
+
 runAsUser:
   type: RunAsAny
 seLinuxContext:
