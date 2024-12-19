@@ -89,14 +89,17 @@ metadata:
 spec:
   ports:
   - port: 80
+    name: http
     protocol: TCP
     targetPort: 80
     nodePort: 30080
   - port: 81
+    name: http-admin
     protocol: TCP
     targetPort: 81
     nodePort: 30081
   - port: 443
+    name: https
     protocol: TCP
     targetPort: 443
     nodePort: 30443
