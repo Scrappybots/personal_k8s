@@ -43,7 +43,7 @@ spec:
     image: docker.io/jc21/nginx-proxy-manager:latest
     name: nginx-proxy
     securityContext:
-      allowPrivilegeEscalation: true
+      allowPrivilegeEscalation: false
       capabilities:
         drop:
         - ALL
