@@ -1,0 +1,44 @@
+- name: Deploy Kasten on Microshift
+  hosts: personal-k8s
+  remote_user: ansible
+  become: yes
+
+  vars:
+    ### Username and password for basic auth defaults to ansible:ansible. Use HTPASSWD to generate new username/password combo and replace.
+    htpasswd_preregex: ansible:$apr1$Q87dxLAg$l/lUNnW5DbWpdo1Nm.Bxt/
+    ### Just in case there are funky regex characters.
+    htpasswd_ansible: {{ htpasswd_preregex | regex_escape() }}
+  tasks:
+  ### Helm requires GIT, so let's start with that.
+  - name: Install Git
+    dnf:
+      name: git
+      state: present
+
+  ### Configure the Volume Snapshot Class based off of volumesnapshotclass.yaml in the kasten folder.
+  - name: Apply Volumesnapshotclass Deployment
+    shell: kubectl apply -f /tmp/deployments/kasten/volumesnapshotclass.yaml
+
+  ### Install Helm
+  - name: Install helm.
+    shell: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    ignore_errors: yes
+
+  ### Helm defaults install to /usr/local/bin/helm, set symbolic link to make life easier to /usr/bin/helm.
+  - name: Create symbolic link from /usr/bin/helm to /usr/local/bin/helm
+    shell: ln -s /usr/local/bin/helm /usr/bin/helm 
+    ignore_errors: yes
+
+  ### Now it is time to finally add the Kasten Helm Repo.
+  - name: Add Kasten Helm Repo
+    shell: helm repo add kasten https://charts.kasten.io/
+
+  ### Now let's make sure all the work we have done so far is looking good. You should not see any errors/warnings here.
+  ### The primary issue you will run in to is with your volume-groups set up earlier. If you have issues, it is a good place to start.
+  - name: Run K10 primer script.
+    shell: curl -s https://docs.kasten.io/tools/k10_primer.sh | bash /dev/stdin csi -s topolvm-provisioner
+    register: k10_primer
+  
+  ###  Time to install Kasten.
+  - name: Install Kasten
+    shell: helm install k10 kasten/k10 --create-namespace -n kasten-io --set externalGateway.create=true --set auth.basicAuth.enabled=true --set auth.basicAuth.htpasswd={{ htpasswd_ansible }}
