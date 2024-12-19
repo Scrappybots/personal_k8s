@@ -16,15 +16,15 @@ volumes:
 - emptyDir
 ---
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: proxy-manager
+---
+apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: nginx-proxy-sa
   namespace: proxy-manager
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: proxy-manager
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
