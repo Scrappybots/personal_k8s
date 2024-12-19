@@ -3,7 +3,7 @@ kind: SecurityContextConstraints
 metadata:
   name: nginx-proxy-scc
   namespace: proxy-manager
-allowPrivilegeEscalation: false
+allowPrivilegeEscalation: true
 runAsUser:
   type: RunAsAny
 seLinuxContext:
