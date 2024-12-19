@@ -60,15 +60,15 @@ metadata:
   namespace: proxy-manager
 spec:
   serviceAccountName: nginx-proxy-sa
-  initContainers:
-  - name: init-permissions
-    image: busybox
-    command: ['sh', '-c', 'mkdir -p /run/s6 /run/service && chmod -R 777 /run/s6 /run/service']
-    volumeMounts:
-    - mountPath: /run/s6
-      name: run-s6
-    - mountPath: /run/service
-      name: run-service
+  # initContainers:
+  # - name: init-permissions
+  #   image: busybox
+  #   command: ['sh', '-c', 'mkdir -p /run/s6 /run/service && chmod -R 777 /run/s6 /run/service']
+  #   volumeMounts:
+  #   - mountPath: /run/s6
+  #     name: run-s6
+  #   - mountPath: /run/service
+  #     name: run-service
   containers:
   - env:
     - name: TERM
