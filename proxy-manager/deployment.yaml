@@ -43,13 +43,12 @@ spec:
     image: docker.io/jc21/nginx-proxy-manager:latest
     name: nginx-proxy
     securityContext:
-      allowPrivilegeEscalation: false
+      allowPrivilegeEscalation: true
       capabilities:
-        drop:
-        - ALL
-      runAsNonRoot: true
+        drop: []
+      runAsUser: 0
       seccompProfile:
-        type: RuntimeDefault
+        type: Unconfined
     resources:
       limits:
         memory: 512Mi
