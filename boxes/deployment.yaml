@@ -1,0 +1,56 @@
+### Create Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: boxes
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: boxes-pod
+  name: boxes-pod
+  namespace: boxes
+spec:
+  containers:
+  - env:
+    - name: TERM
+      value: xterm
+    image: docker.io/tinkster42/boxes:latest
+    name: boxes
+    ports:
+    - containerPort: 8000
+    stdin: true
+    tty: true
+    resources:
+      limits:
+        memory: 512Mi
+        cpu: 500m
+      requests:
+        memory: 256Mi
+        cpu: 250m
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: boxes-service
+  name: boxes-service
+  namespace: boxes
+spec:
+  ports:
+  - port: 8000
+    protocol: TCP
+    targetPort: 8000
+    nodePort: 30040
+  selector:
+    app: boxes-pod
+  type: NodePort
