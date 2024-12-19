@@ -92,10 +92,6 @@ spec:
       name: data-pvc
     - mountPath: /etc/letsencrypt
       name: letsencrypt-pvc
-    - mountPath: /run/s6
-      name: run-s6
-    - mountPath: /run/service
-      name: run-service
   volumes:
   - name: data-pvc
     persistentVolumeClaim:
@@ -103,10 +99,6 @@ spec:
   - name: letsencrypt-pvc
     persistentVolumeClaim:
       claimName: letsencrypt-pvc
-  - name: run-s6
-    emptyDir: {}
-  - name: run-service
-    emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
