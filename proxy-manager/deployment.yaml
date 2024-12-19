@@ -45,10 +45,11 @@ spec:
     securityContext:
       allowPrivilegeEscalation: true
       capabilities:
-        drop: []
-      runAsUser: 0
+        drop:
+        - ALL
+      runAsNonRoot: true
       seccompProfile:
-        type: Unconfined
+        type: RuntimeDefault
     resources:
       limits:
         memory: 512Mi
