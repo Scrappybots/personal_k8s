@@ -59,8 +59,11 @@ spec:
         cpu: 250m
     ports:
     - containerPort: 80
+      name: http
     - containerPort: 81
+      name: http-admin
     - containerPort: 443
+      name: https
     stdin: true
     tty: true
     volumeMounts:
